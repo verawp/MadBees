@@ -1,0 +1,36 @@
+---
+title: "Madison Bee Communities"
+author: "Vera Pfeiffer"
+date: "January 9, 2019"
+output: 
+  pdf_document:
+  html_document:
+    theme: spacelab
+    toc: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Bee Community Data
+
+This report includes the statistical analyses used to understand the influence of landscape composition and land use history on bee community diversity across a rapidly-growing midwestern american city.  Bees sampled in passive traps known as bee bowls six times across the City of Madison in 2013.
+
+```{r}
+setwd("~/Desktop/Madison Urban Bees")
+MadBees<-read.csv('MadBeesBeeBowlsFinal.csv')
+xy<-read.csv("xy.csv")
+names(MadBees)
+```
+
+## Data summary
+
+The unique bee species identified in the samples include:
+
+```{r echo=FALSE}
+sort(unique(MadBees$Morphospecies))
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
