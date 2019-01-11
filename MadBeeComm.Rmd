@@ -3,7 +3,6 @@ title: "Madison Bee Communities"
 author: "Vera Pfeiffer"
 date: "January 9, 2019"
 output: 
-  pdf_document:
   html_document:
     theme: spacelab
     toc: true
@@ -12,6 +11,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = '~/Desktop/MadBees')
 ```
 
 ## Bee Community Data
@@ -19,13 +19,13 @@ knitr::opts_chunk$set(echo = TRUE)
 This report includes the statistical analyses used to understand the influence of landscape composition and land use history on bee community diversity across a rapidly-growing midwestern american city.  Bees sampled in passive traps known as bee bowls six times across the City of Madison in 2013.
 
 ```{r}
-setwd("~/Desktop/Madison Urban Bees")
-MadBees<-read.csv('MadBeesBeeBowlsFinal.csv')
+getwd()
+MadBees<-read.csv("MadBeesBeeBowlsFinal.csv")
 xy<-read.csv("xy.csv")
 names(MadBees)
 ```
 
-## Data summary
+## Bee species summary
 
 The unique bee species identified in the samples include:
 
@@ -34,3 +34,11 @@ sort(unique(MadBees$Morphospecies))
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
+
+
+
