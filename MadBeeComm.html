@@ -127,23 +127,25 @@ $(document).ready(function () {
 <div id="TOC">
 <ul>
 <li><a href="#bee-community-data"><span class="toc-section-number">0.1</span> Bee Community Data</a></li>
-<li><a href="#data-summary"><span class="toc-section-number">0.2</span> Data summary</a></li>
+<li><a href="#bee-species-summary"><span class="toc-section-number">0.2</span> Bee species summary</a></li>
+<li><a href="#bee-species-subsets-by-habitat-type"><span class="toc-section-number">0.3</span> Bee species subsets by habitat type</a></li>
 </ul>
 </div>
 
 <div id="bee-community-data" class="section level2">
 <h2><span class="header-section-number">0.1</span> Bee Community Data</h2>
 <p>This report includes the statistical analyses used to understand the influence of landscape composition and land use history on bee community diversity across a rapidly-growing midwestern american city. Bees sampled in passive traps known as bee bowls six times across the City of Madison in 2013.</p>
-<pre class="r"><code>setwd(&quot;~/Desktop/Madison Urban Bees&quot;)
-MadBees&lt;-read.csv('MadBeesBeeBowlsFinal.csv')
+<pre class="r"><code>getwd()</code></pre>
+<pre><code>## [1] &quot;/home/vera/Desktop/MadBees&quot;</code></pre>
+<pre class="r"><code>MadBees&lt;-read.csv(&quot;MadBeesBeeBowlsFinal.csv&quot;)
 xy&lt;-read.csv(&quot;xy.csv&quot;)
 names(MadBees)</code></pre>
 <pre><code>##  [1] &quot;X.1&quot;           &quot;Site&quot;          &quot;SampleID&quot;      &quot;Sex&quot;          
 ##  [5] &quot;Family&quot;        &quot;Morphospecies&quot; &quot;X&quot;             &quot;Size&quot;         
 ##  [9] &quot;Habitat&quot;       &quot;Period&quot;        &quot;SiteID&quot;</code></pre>
 </div>
-<div id="data-summary" class="section level2">
-<h2><span class="header-section-number">0.2</span> Data summary</h2>
+<div id="bee-species-summary" class="section level2">
+<h2><span class="header-section-number">0.2</span> Bee species summary</h2>
 <p>The unique bee species identified in the samples include:</p>
 <pre><code>##  [1] Agapostemon sericeus             Agapostemon virescens           
 ##  [3] Andrena bisalicis                Andrena crataegi                
@@ -195,7 +197,27 @@ names(MadBees)</code></pre>
 ## [95] Sphecodes spp.                   Stelis louisae                  
 ## [97] Stelis nitida                    Unk. Bee – partial specimen     
 ## 98 Levels: Agapostemon sericeus ... Unk. Bee – partial specimen</code></pre>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+</div>
+<div id="bee-species-subsets-by-habitat-type" class="section level2">
+<h2><span class="header-section-number">0.3</span> Bee species subsets by habitat type</h2>
+<pre class="r"><code>Soilbees&lt;-subset(MadBees, Habitat==&quot;Soil&quot;)
+Cavitybees&lt;-subset(MadBees, Habitat==&quot;Cavity&quot;)
+Woodbees&lt;-subset(MadBees, Habitat==&quot;Wood&quot;)</code></pre>
+<div id="species-matrices" class="section level17">
+<p><span class="header-section-number">0.3.0.0.0.0.0.0.0.0.0.0.0.0.0.0.1</span> Species matrices</p>
+<pre class="r"><code>library(vegan)</code></pre>
+<pre><code>## Loading required package: permute</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## This is vegan 2.3-1</code></pre>
+<pre class="r"><code>MadbeesMAT&lt;-xtabs( ~ MadBees$SiteID + MadBees$Morphospecies, data=MadBees)
+SoilbeesMAT&lt;-xtabs( ~ Soilbees$SiteID + Soilbees$Morphospecies, data=Soilbees)
+CavitybeesMAT&lt;-xtabs( ~ Cavitybees$SiteID + Cavitybees$Morphospecies, data=Cavitybees)
+WoodbeesMAT&lt;-xtabs( ~ Woodbees$SiteID + Woodbees$Morphospecies, data=Woodbees)</code></pre>
+<pre class="r"><code>write.csv(MadbeesMAT, &quot;allbees.csv&quot;)
+write.csv(SoilbeesMAT, &quot;soilbees.csv&quot;)
+write.csv(CavitybeesMAT, &quot;cavitybees.csv&quot;)
+write.csv(WoodbeesMAT, &quot;woodbees.csv&quot;)</code></pre>
+</div>
 </div>
 
 

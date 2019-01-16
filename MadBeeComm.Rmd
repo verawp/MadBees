@@ -33,7 +33,30 @@ The unique bee species identified in the samples include:
 sort(unique(MadBees$Morphospecies))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Bee species subsets by habitat type
+
+```{r}
+Soilbees<-subset(MadBees, Habitat=="Soil")
+Cavitybees<-subset(MadBees, Habitat=="Cavity")
+Woodbees<-subset(MadBees, Habitat=="Wood")
+```
+
+#################  Species matrices ####################
+
+```{r}
+library(vegan)
+MadbeesMAT<-xtabs( ~ MadBees$SiteID + MadBees$Morphospecies, data=MadBees)
+SoilbeesMAT<-xtabs( ~ Soilbees$SiteID + Soilbees$Morphospecies, data=Soilbees)
+CavitybeesMAT<-xtabs( ~ Cavitybees$SiteID + Cavitybees$Morphospecies, data=Cavitybees)
+WoodbeesMAT<-xtabs( ~ Woodbees$SiteID + Woodbees$Morphospecies, data=Woodbees)
+```
+
+```{r}
+write.csv(MadbeesMAT, "allbees.csv")
+write.csv(SoilbeesMAT, "soilbees.csv")
+write.csv(CavitybeesMAT, "cavitybees.csv")
+write.csv(WoodbeesMAT, "woodbees.csv")
+```
 
 
 
