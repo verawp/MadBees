@@ -60,6 +60,124 @@ write.csv(WoodbeesMAT, "woodbees.csv")
 
 
 
+###################### Abundance ######################
+
+
+library(vegan)
+library(ggplot2)
+
+Aabd<-rowSums(allB[,2:ncol(allB)])
+Asp <- specnumber(allB)
+
+
+ASmod<-plot(log(Asp)~yrA$YrMed)
+Devel<-rep("Old",length(Asp))
+Devel[which(yrA$YrMed>1960)]<-"New"
+
+
+BeeData<-data.frame(Aabd,Asp,Devel)
+
+
+ASmod<-plot(log(Asp)~Devel)
+ASmod<-lm(S~PercFor1000+PercImp1000+PercNVeg1000+PercFor200+PercImp200+PercNVeg200+YrMean)
+
+f <- ggplot(BeeData, aes(Devel, Aabd))
+f + geom_violin(scale = "area")
+
+f <- ggplot(BeeData, aes(Devel, Asp))
+f + geom_violin(scale = "area")
+
+
+Sabd<-rowSums(soilB[,2:99])
+SSp<-rowSums(soilB[,2:99]!=0)
+
+
+Cabd<-rowSums(cavityB[,2:99])
+CSp<-rowSums(cavityB[,2:99]!=0)
+
+
+Wabd<-rowSums(woodB[,2:99])
+WSp<-rowSums(woodB[,2:99]!=0)
+
+
+DevelC<-rep("Old",length(CSp))
+DevelC[which(yrC$YrMed>1961)]<-"New"
+
+DevelW<-rep("Old",length(WSp))
+DevelW[which(yrW$YrMed>1961)]<-"New"
+
+
+Devel01<-rep(0,length(Asp))
+Devel01[which(yrA$YrMed>1961)]<-1
+DevelC01<-rep(0,length(CSp))
+DevelC01[which(yrC$YrMed>1961)]<-1
+DevelW01<-rep(0,length(WSp))
+DevelW01[which(yrW$YrMed>1961)]<-1
+
+SBeeData<-data.frame(Sabd,SSp,Devel)
+WBeeData<-data.frame(Wabd,WSp,DevelW)
+CBeeData<-data.frame(Cabd,CSp,DevelC)
+
+AVabdA$Devel01ST<-scale(Devel01,0,1)
+
+f <- ggplot(SBeeData, aes(Devel, Sabd))
+f + geom_violin(scale = "area")
+
+f <- ggplot(SBeeData, aes(Devel, SSp))
+f + geom_violin(scale = "area")
+
+f <- ggplot(WBeeData, aes(DevelW, Wabd))
+f + geom_violin(scale = "area")
+
+f <- ggplot(WBeeData, aes(DevelW, WSp))
+f + geom_violin(scale = "area")
+
+f <- ggplot(CBeeData, aes(DevelC, Cabd))
+f + geom_violin(scale = "area")
+
+f <- ggplot(CBeeData, aes(DevelC, CSp))
+f + geom_violin(scale = "area")
+
+
+
+AabdMod<-lm(ASpST~PercFor1000+PercNVeg1000+PercImp1000+PercFor200+PercImp200+PercNVeg200+Devel01ST, data=AVabdA,  na.action = "na.fail")
+summary(AabdMod)
+vif(AabdMod)
+dredge(AabdMod)
+ABeeSpmodsel<-dredge(AabdMod,beta = c("none"), rank = "AICc")
+avgcoef<-model.avg(ABeeSpmodsel, cumsum(weight) <= .95)
+avgcoef
+importance(avgcoef)
+
+
+SabdMod<-lm(SSp~PercFor1000+PercNVeg1000+PercImp1000+PercFor200+PercImp200+PercNVeg200+Devel01, data=AVabdS,  na.action = "na.fail")
+summary(SabdMod)
+vif(SabdMod)
+SabdModmodsel<-dredge(SabdMod,beta = c("none"), rank = "AICc")
+avgcoef<-model.avg(SabdModmodsel, cumsum(weight) <= .95)
+avgcoef
+importance(avgcoef)
+
+WabdMod<-lm(WSp~PercFor1000+PercNVeg1000+PercImp1000+PercFor200+PercImp200+PercNVeg200+Devel01, data=AVabdW,  na.action = "na.fail")
+summary(WabdMod)
+vif(WabdMod)
+WabdModmodsel<-dredge(WabdMod,beta = c("none"), rank = "AICc")
+WabdModmodsel
+avgcoef<-model.avg(WabdModmodsel, cumsum(weight) <= .95)
+avgcoef
+importance(avgcoef)
+
+
+CabdMod<-lm(CSp~PercFor1000+PercNVeg1000+PercImp1000+PercFor200+PercImp200+PercNVeg200+Devel01, data=AVabdC,  na.action = "na.fail")
+summary(CabdMod)
+vif(CabdMod)
+CabdModmodsel<-dredge(CabdMod,beta = c("none"), rank = "AICc")
+CabdModmodsel
+avgcoef<-model.avg(CabdModmodsel, cumsum(weight) <= .95)
+avgcoef
+importance(avgcoef)
+
+
 
 
 
